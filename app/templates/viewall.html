@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Subscription Tracker</title>
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static',
+        filename='viewall.css') 
+        }}"
+    >
+
+    
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+</head>
+
+<body>
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div>
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+
+                <span>SubTracker</span>
+
+            </div>
+
+            <nav class="sidebar-menu">
+
+                <a href="{{ url_for('homes.home') }}">
+                    <i class="fa-solid fa-house"></i>
+                    Tabloul meu de bord
+                </a>
+
+                <a href="{{ url_for('homes.view_all') }}" class = "active">
+                    <i class="fa-solid fa-credit-card"></i>
+                    Abonamente/Cheltuieli
+                </a>
+
+                <a href="{{ url_for('homes.projection') }}">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Poiectie cheltuieli
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-bell"></i>
+                    Notifications(in lucru)
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings(in lucru)  
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <div class="profile-box">
+
+            <img
+                src="https://i.pravatar.cc/40"
+                alt=""
+            >
+
+            <div>
+                <h4>{{ userdata[0].username if userdata else "User" }}</h4> 
+                <a href="{{ url_for('auth.logout') }}" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout  
+                </a>
+            </div>
+
+        </div>
+
+    </aside>
+
+    <main>
+        <div class="content-grid">
+
+            <!-- SUBSCRIPTIONS -->
+            <div class="subscriptions-box">
+
+                <div class="section-header">
+
+                    <h3>Abonamente</h3>
+
+                </div>
+                {% for sub in subscriptions %}
+                <div class="subscription-item">
+
+                    <div class="left">
+
+                        <div class="service-icon green">
+                            {{ sub.name[0]|upper }}
+                        </div>
+
+                        <div>
+                            <h4>{{ sub.name }}</h4>
+                            
+                        </div>
+                    </div>
+
+                    <div class="right">
+                        <h4>${{ "%.2f"|format(sub.cost) }}</h4>
+                        <p>{{ sub.due_date }}</p>
+                    </div>
+
+                </div>
+
+                {%endfor%}
+
+                
+            </div>
+            <!-- CHELTUIELI    -->
+            <div class="subscriptions-box">
+
+                <div class="section-header">
+
+                    <h3>Cheltuieli</h3>
+
+
+                </div>
+                {% for chel in cheltuieli %}
+                <div class="subscription-item">
+
+                    <div class="left">
+
+                        <div class="service-icon orange">
+                            {{ chel.name[0]|upper }}
+                        </div>
+
+                        <div>
+                            <h4>{{ chel.name }}</h4>
+                            
+                        </div>
+                    </div>
+
+                    <div class="right">
+                        <h4>${{ "%.2f"|format(chel.cost) }}</h4>
+                        <p>{{ chel.date }}</p>
+                    </div>
+
+                </div>
+
+                {%endfor%}
+
+                
+            </div>
+        </div>
+        </main>
+    </div>
+</body>
+</html> 

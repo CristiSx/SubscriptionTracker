@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Projection</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='projection.css') }}"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div>
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+
+                <span>SubTracker</span>
+
+            </div>
+
+            <nav class="sidebar-menu">
+
+                <a href="{{ url_for('homes.home') }}">
+                    <i class="fa-solid fa-house"></i>
+                    Tabloul meu de bord
+                </a>
+
+                <a href="{{ url_for('homes.view_all') }}">
+                    <i class="fa-solid fa-credit-card"></i>
+                    Abonamente/Cheltuieli
+                </a>
+
+                <a href="{{ url_for('homes.projection') }}" class="active">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Proiectie cheltuieli
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-bell"></i>
+                    Notifications(in lucru)
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings(in lucru)
+                </a>
+
+            </nav>
+
+        </div>
+
+        <div class="profile-box">
+
+            <img
+                src="https://i.pravatar.cc/40"
+                alt=""
+            >
+
+            <div>
+                <h4>{{ userdata[0].username if userdata else "User" }}</h4>
+
+                <a href="{{ url_for('auth.logout') }}" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+
+        <div class="top-section">
+
+            <div>
+                <h1>Financial Projection</h1>
+                <p>
+                    Estimated expenses for the next 12 months
+                </p>
+            </div>
+
+        </div>
+
+        <!-- CARDS -->
+        <div class="cards-container">
+
+            <div class="card">
+                <div class="card-icon green">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+
+                <div>
+                    <h3>
+                        {{ values | sum | round(2) }} $
+                    </h3>
+                    <p>Total projected</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon blue">
+                    <i class="fa-solid fa-calendar"></i>
+                </div>
+
+                <div>
+                    <h3>12</h3>
+                    <p>Months analyzed</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CHART -->
+        <div class="chart-container">
+
+            <div class="chart-header">
+                <h2>Expenses Projection</h2>
+            </div>
+
+            <canvas id="projectionChart"></canvas>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-container">
+
+            <div class="table-header">
+                <h2>Monthly Breakdown</h2>
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Month</th>
+                        <th>Estimated Expenses</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                        {% for i in range(labels|length) %}
+
+                        <tr>
+                            <td>{{ labels[i] }}</td>
+                            <td>${{ values[i] | round(2) }}</td>
+                        </tr>
+
+                        {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+    const labels = JSON.parse('{{ labels | tojson | safe }}');
+    const values = JSON.parse('{{ values | tojson | safe }}');
+
+    const ctx = document
+        .getElementById('projectionChart')
+        .getContext('2d');
+
+    new Chart(ctx, {
+
+        type: 'line',
+
+        data: {
+
+            labels: labels,
+
+            datasets: [{
+
+                label: 'Projected Expenses',
+
+                data: values,
+
+                borderColor: '#10b981',
+
+                backgroundColor: 'rgba(16,185,129,0.2)',
+
+                fill: true,
+
+                tension: 0.4,
+
+                pointBackgroundColor: '#10b981',
+
+                pointRadius: 5
+
+            }]
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    display: true
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

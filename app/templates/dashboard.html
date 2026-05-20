@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Subscription Tracker</title>
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static',
+        filename='dashboard.css') 
+        }}"
+    >
+
+    
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+</head>
+
+<div class="modal" id="subscriptionModal">
+
+    <div class="modal-content">
+        
+        <div class="modal-header">
+
+            <h2>Adaugă Abonament</h2> <div class = "close-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></div>
+
+        </div>
+
+
+        <form method="POST"
+              action="{{ url_for('homes.add_subscription') }}">
+            <div class="text-subscription-add">Nume:</div>
+            <input
+                type="text"
+                name="name"
+                placeholder="Service Name"
+                required
+            >
+            <div class="text-subscription-add">Cost:</div>
+            <input
+                type="number"
+                step="0.01"
+                name="cost"
+                placeholder="Price"
+                required
+            >
+            <div class="text-subscription-add">Tip abonament:</div>
+            <select name="billing_cycle">
+
+                <option value="monthly">
+                    Lunar
+                </option>
+
+                <option value="yearly">
+                    Anual
+                </option>
+
+            </select>
+            <div class="text-subscription-add">Data primei plăți:</div>
+            <input
+                type="date"
+                name="first_bill_date"
+                required
+            >
+             <div class="text-subscription-add">Data încetării abonamentului:</div>
+            <input
+                type="date"
+                name="due_date"
+                required
+            >
+            
+
+            <button type="submit" class="submit-btn">
+                Salvează Abonament
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class = "modal" id = "OneTimeBillModal">
+
+    <div class="modal-content">
+        
+        <div class="modal-header">
+
+            <h2>Adaugă Cheltuială Unică</h2> <div class = "close-btn" id="closeOneTimeBillModal"><i class="fa-solid fa-xmark"></i></div>
+        </div>
+
+        <form method="POST"
+              action="{{ url_for('homes.add_one_time_expense') }}">
+            <div class="text-subscription-add">Nume:</div>
+            <input
+                type="text"
+                name="name"
+                placeholder="Expense Name"
+                required
+            >
+            <div class="text-subscription-add">Cost:</div>
+            <input
+                type="number"
+                step="0.01"
+                name="cost"
+                placeholder="Price"
+                required
+            >
+            <div class="text-subscription-add">Data:</div>
+            <input
+                type="date"
+                name="date"
+                required
+            >
+
+            <button type="submit" class="submit-btn">
+                Salvează Cheltuială
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div>
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+
+                <span>SubTracker</span>
+
+            </div>
+
+            <nav class="sidebar-menu">
+
+                <a href="{{ url_for('homes.home') }}" class="active">
+                    <i class="fa-solid fa-house"></i>
+                    Tabloul meu de bord
+                </a>
+
+                <a href="{{ url_for('homes.view_all') }}">
+                    <i class="fa-solid fa-credit-card"></i>
+                    Abonamente/Cheltuieli
+                </a>
+
+                <a href="{{ url_for('homes.projection') }}">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Poiectie cheltuieli
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-bell"></i>
+                    Notifications(in lucru)
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings(in lucru)  
+                </a>
+
+            </nav>
+
+        </div>
+
+
+        <div class="profile-box">
+
+            <img
+                src="https://i.pravatar.cc/40"
+                alt=""
+            >
+
+            <div>
+                <h4>{{ userdata[0].username if userdata else "User" }}</h4> 
+                <a href="{{ url_for('auth.logout') }}" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout  
+                </a>
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dashboard-main">
+
+        <!-- TOP -->
+        <div class="topbar">
+
+            <div>
+                <h1>Tabloul meu de bord</h1>
+
+                <p>
+                    Welcome back! Here's your subscription overview.
+                </p>
+            </div>
+
+
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <div>
+                    <p>Total Cheltuieli</p>
+                    <h2>${{ "%.2f"|format(stats.monthly_spend) }}</h2>
+                    
+                </div>
+
+                <div class="stat-icon green">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div>
+                    <p>Abonamente active</p>
+                    <h2>{{ stats.active_subscriptions }}</h2>
+                    
+                </div>
+
+                <div class="stat-icon blue">
+                    <i class="fa-solid fa-credit-card"></i>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div>
+                    <p>Facturi viitoare</p>
+                    <h2>${{ "%.2f"|format(stats.upcoming_bills) }}</h2>
+                    
+                </div>
+
+                <div class="stat-icon orange">
+                    <i class="fa-solid fa-calendar"></i>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div>
+                    <p>Media per Serviciu</p>
+                    <h2>${{ "%.2f"|format(stats.average_per_service) }}</h2>
+                    
+                </div>
+
+                <div class="stat-icon purple">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content-grid">
+
+            <!-- SUBSCRIPTIONS -->
+            <div class="subscriptions-box">
+
+                <div class="section-header">
+
+                    <h3>Abonamente</h3>
+
+                    <a href="{{ url_for('homes.view_all') }}">
+                        Toate abonamentele
+                    </a>
+
+                </div>
+                {% for sub in subscriptions %}
+                <div class="subscription-item">
+
+                    <div class="left">
+
+                        <div class="service-icon green">
+                            {{ sub.name[0]|upper }}
+                        </div>
+
+                        <div>
+                            <h4>{{ sub.name }}</h4>
+                            
+                        </div>
+                    </div>
+
+                    <div class="right">
+                        <h4>${{ "%.2f"|format(sub.cost) }}</h4>
+                        <p>{{ sub.due_date }}</p>
+                    </div>
+
+                </div>
+
+                {%endfor%}
+
+                
+            </div>
+            <!-- RIGHT PANEL -->
+            <div class="right-panel">
+
+                
+
+
+                <div class="actions-box">
+
+                    <h3>Acțiuni rapide</h3>
+
+                    <button type="button" class="primary-btn" id="openModal">
+                        <i class="fa-solid fa-plus"></i>
+                        Adaugă abonament
+                    </button>
+
+                    <button type="button" class="secondary-btn" id="openOneTimeBillModal">
+                        <i class="fa-solid fa-plus"></i>
+                        Adaugă cheltuială unică
+                    </button>
+
+                    <button class="secondary-btn">
+                        <i class="fa-solid fa-bell"></i>
+                        Seteaza Notificari (in lucru)
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+
+const modal = document.getElementById("subscriptionModal");
+
+const openBtn = document.getElementById("openModal");
+
+const closeBtn = document.getElementById("closeModal");
+
+const modalOneTimeBill = document.getElementById("OneTimeBillModal");
+
+const openOneTimeBillBtn = document.getElementById("openOneTimeBillModal");
+
+const closeOneTimeBillBtn = document.getElementById("closeOneTimeBillModal");
+
+openBtn.onclick = () => {
+    modal.style.display = "flex";
+}
+
+closeBtn.onclick = () => {
+    modal.style.display = "none"; 
+}
+
+openOneTimeBillBtn.onclick = () => {
+    modalOneTimeBill.style.display = "flex";
+}
+
+closeOneTimeBillBtn.onclick = () => {
+    modalOneTimeBill.style.display = "none";
+}
+
+window.onclick = (e) => {
+
+    if (e.target === modal) {
+        modalOneTimeBill.style.display = "none"; 
+    }
+}
+
+window.onclick = (e) => {
+
+    if (e.target === modal) {
+        modal.style.display = "none"; 
+    }
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - SubTrack</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="left">
+        <div class="logo">Subscription Tracker</div>
+
+        <h1>Monitorizează-ți abonamentele</h1>
+        <p>
+            Urmărește, organizează și optimizează toate plățile recurente într-un singur loc.
+        </p>
+
+        <div class="features">
+            <div class="feature">
+                <h4>Notificări Smart</h4>
+                <p>Primește notificări înainte de reînnoire</p>
+            </div>
+
+            <div class="feature">
+                <h4>Statistici</h4>
+                <p>Visualizează-ți cheltuielile</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="login-box">
+
+            <h2>Bine ai venit</h2>
+            <p>Autentifică-te pentru a continua gestionarea abonamentelor tale</p>
+
+            <form method="POST">
+                <input type="email" name="email" placeholder="Introdu adresa ta de email" required>
+                <input type="password" name="password" placeholder="Introdu parola ta" required>
+
+                <div class="options">
+                    <label><input type="checkbox">Ține-mi minte</label>
+                    <a href="#">Ai uitat parola?</a>
+                </div>
+
+                <button type="submit" class="btn-login">Sign In</button>
+            </form>
+
+            <div class="signup">
+                <span>Nu ai cont?</span>
+                <a href="{{ url_for('auth.register') }}">Sign up</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
