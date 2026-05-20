@@ -1,3 +1,5 @@
 
 app/
 .env
+
+# ignora env files
