@@ -1,0 +1,49 @@
+# Virtual Environment
+venv/
+.env
+app/
+.env
+# Python cache
+__pycache__/
+*.pyc
+
+# Flask
+instance/
+.webassets-cache
+
+# Database
+*.db
+*.sqlite3
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build files
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Package files
+*.egg-info/
+
+# Migrations cache
+migrations/__pycache__/
+
+# Static generated files
+*.map
