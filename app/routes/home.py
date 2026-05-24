@@ -60,13 +60,9 @@ def view_all():
 @login_required
 def projection():
 
-    subscriptions = Subscription.query.filter_by(
-        user_id=current_user.id
-    ).all()
-
-    expenses = OneTimeExpense.query.filter_by(
-        user_id=current_user.id
-    ).all()
+    userdata = User.query.filter_by(id=current_user.id).all()
+    subscriptions = Subscription.query.filter_by(user_id=current_user.id).all()
+    expenses = OneTimeExpense.query.filter_by(user_id=current_user.id).all()
 
     projection_data = defaultdict(float)
 
@@ -98,6 +94,7 @@ def projection():
 
     return render_template(
         "projection.html",
+        userdata=userdata,
         labels=list(projection_data.keys()),
         values=list(projection_data.values())
     )
@@ -141,6 +138,8 @@ def add_subscription():
 
     return redirect(url_for("homes.home"))
 
+
+
 @homes.route("/add-one-time-expense", methods=["POST"])
 @login_required
 def add_one_time_expense():
@@ -159,3 +158,49 @@ def add_one_time_expense():
     db.session.commit()
 
     return redirect(url_for("homes.home"))
+
+@homes.route(
+    "/delete-subscription/<int:id>",
+    methods=["POST"]
+)
+@login_required
+def delete_subscription(id):
+
+    subscription = Subscription.query.get_or_404(id)
+
+    if subscription.user_id != current_user.id:
+
+        return redirect(
+            url_for("homes.home")
+        )
+
+    db.session.delete(subscription)
+
+    db.session.commit()
+
+    return redirect(
+        url_for("homes.view_all")
+    )
+
+@homes.route(
+    "/delete-expense/<int:id>",
+    methods=["POST"]
+)
+@login_required
+def delete_expense(id):
+
+    expense = OneTimeExpense.query.get_or_404(id)
+
+    if expense.user_id != current_user.id:
+
+        return redirect(
+            url_for("homes.home")
+        )
+
+    db.session.delete(expense)
+
+    db.session.commit()
+
+    return redirect(
+        url_for("homes.view_all")
+    )
