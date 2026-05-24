@@ -8,6 +8,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(200))
 
+    subscriptions = db.relationship(
+    'Subscription',
+    backref='user',
+    lazy=True)
+
     def set_password(self, password):
         self.password = generate_password_hash(password, method='scrypt')
 

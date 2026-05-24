@@ -168,3 +168,22 @@ main{
     background:#ffedd5;
     color:#ea580c;
 }
+
+.top-actions{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.delete-btn{
+    background: transparent;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s ease;
+}
+
+.delete-btn:hover{
+    color: #ef4444;
+    transform: scale(1.1);
+}

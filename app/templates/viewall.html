@@ -65,16 +65,6 @@
                     Poiectie cheltuieli
                 </a>
 
-                <a href="#">
-                    <i class="fa-solid fa-bell"></i>
-                    Notifications(in lucru)
-                </a>
-
-                <a href="#">
-                    <i class="fa-solid fa-gear"></i>
-                    Settings(in lucru)  
-                </a>
-
             </nav>
 
         </div>
@@ -82,10 +72,7 @@
 
         <div class="profile-box">
 
-            <img
-                src="https://i.pravatar.cc/40"
-                alt=""
-            >
+            
 
             <div>
                 <h4>{{ userdata[0].username if userdata else "User" }}</h4> 
@@ -126,9 +113,30 @@
                     </div>
 
                     <div class="right">
-                        <h4>${{ "%.2f"|format(sub.cost) }}</h4>
-                        <p>{{ sub.due_date }}</p>
-                    </div>
+
+            <div class="top-actions">
+
+                <form
+                    action="{{ url_for('homes.delete_subscription', id=sub.id) }}"
+                    method="POST"
+                >
+
+                    <button
+                        type="submit"
+                        class="delete-btn"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </form>
+
+            </div>
+
+    <h4>${{ "%.2f"|format(sub.cost) }}</h4>
+
+    <p>{{ sub.due_date }}</p>
+
+</div>
 
                 </div>
 
@@ -161,9 +169,30 @@
                     </div>
 
                     <div class="right">
-                        <h4>${{ "%.2f"|format(chel.cost) }}</h4>
-                        <p>{{ chel.date }}</p>
+
+                    <div class="top-actions">
+
+                        <form
+                            action="{{ url_for('homes.delete_expense', id=chel.id) }}"
+                            method="POST"
+                        >
+
+                            <button
+                                type="submit"
+                                class="delete-btn"
+                            >
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+
+                        </form>
+
                     </div>
+
+                    <h4>${{ "%.2f"|format(chel.cost) }}</h4>
+
+                    <p>{{ chel.date }}</p>
+
+                </div>
 
                 </div>
 

@@ -20,17 +20,11 @@ def register():
             return render_template("register.html", error="Toate câmpurile sunt obligatorii")
         if User.query.filter_by(email=email).first():
             return render_template("register.html", error="Email-ul este deja înregistrat")
-        
-            
-            
         user = User(username=username, email=email)
         user.set_password(password)
-
         db.session.add(user)
         db.session.commit()
-
         return redirect(url_for("auth.login"))
-
     return render_template("register.html")
 
 
