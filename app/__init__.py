@@ -33,7 +33,7 @@ def create_app():
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    # CONFIGURARE EMAIL
+    
     app.config["MAIL_SERVER"] = "smtp.gmail.com"
 
     app.config["MAIL_PORT"] = 587
