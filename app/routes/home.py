@@ -34,7 +34,6 @@ def home():
 
         "active_subscriptions": len(subscriptions),
 
-        "upcoming_bills": 0,
 
         "average_per_service":
             round(total_spend / len(subscriptions), 2)
