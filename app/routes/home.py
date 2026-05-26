@@ -5,6 +5,7 @@ from flask import Blueprint, render_template
 from flask import request, redirect, url_for
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import locale
 
 from flask_login import (
     login_required,
@@ -68,12 +69,27 @@ def projection():
 
     today = datetime.today()
 
-  
+    luni = {
+        1: "Ianuarie",
+        2: "Februarie",
+        3: "Martie",
+        4: "Aprilie",
+        5: "Mai",
+        6: "Iunie",
+        7: "Iulie",
+        8: "August",
+        9: "Septembrie",
+        10: "Octombrie",
+        11: "Noiembrie",
+        12: "Decembrie"
+    }
+
     for i in range(12):
 
         future_date = today + relativedelta(months=i)
 
-        month_name = future_date.strftime("%B %Y")
+        month_name = f"{luni[future_date.month]} {future_date.year}"
+        print(month_name)
 
         # SUBSCRIPTIONS
         for sub in subscriptions:
@@ -87,7 +103,7 @@ def projection():
         # ONE TIME EXPENSES
         for expense in expenses:
 
-            expense_month = expense.date.strftime("%B %Y")
+            expense_month = f"{luni[expense.date.month]} {expense.date.year}"
 
             if expense_month == month_name:
                 projection_data[month_name] += expense.cost
@@ -98,14 +114,6 @@ def projection():
         labels=list(projection_data.keys()),
         values=list(projection_data.values())
     )
-
-@homes.route("/analytics")
-@login_required
-def analytics():
-    subscriptions = Subscription.query.filter_by(user_id=current_user.id).all()
-    userdata = User.query.filter_by(id=current_user.id).all()
-    cheltuieli = OneTimeExpense.query.filter_by(user_id=current_user.id).all()
-    return render_template("analytics.html", subscriptions=subscriptions, userdata=userdata, cheltuieli=cheltuieli)
 
 @homes.route("/add-subscription", methods=["POST"])
 @login_required
