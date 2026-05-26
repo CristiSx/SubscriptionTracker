@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Proiectie</title>
+    <title>Proiecție</title>
 
     <link
         rel="stylesheet"
@@ -59,7 +59,7 @@
 
                 <a href="{{ url_for('homes.projection') }}" class="active">
                     <i class="fa-solid fa-chart-pie"></i>
-                    Proiectie cheltuieli
+                    Proiecție cheltuieli
                 </a>
 
 
@@ -90,7 +90,7 @@
         <div class="top-section">
 
             <div>
-                <h1>Proiectie financiara</h1>
+                <h1>Proiecție financiara</h1>
                 <p>
                     Cheltuieli estimate pentru urmatoarele 12 luni
                 </p>
@@ -110,7 +110,7 @@
                     <h3>
                         {{ values | sum | round(2) }} $
                     </h3>
-                    <p>Total projected</p>
+                    <p>Total proiectat </p>
                 </div>
             </div>
 
@@ -121,7 +121,7 @@
 
                 <div>
                     <h3>12</h3>
-                    <p>Months analyzed</p>
+                    <p>Luni analizate</p>
                 </div>
             </div>
 
@@ -131,7 +131,7 @@
         <div class="chart-container">
 
             <div class="chart-header">
-                <h2>Expenses Projection</h2>
+                <h2>Proiecție cheltuieli</h2>
             </div>
 
             <canvas id="projectionChart"></canvas>
@@ -142,7 +142,7 @@
         <div class="table-container">
 
             <div class="table-header">
-                <h2>Monthly Breakdown</h2>
+                <h2>Proiecție cheltuieli</h2>
             </div>
 
             <table>
@@ -150,8 +150,8 @@
                 <thead>
 
                     <tr>
-                        <th>Month</th>
-                        <th>Estimated Expenses</th>
+                        <th>Luna</th>
+                        <th>Cheltuieli estimate </th>
                     </tr>
 
                 </thead>
@@ -178,8 +178,8 @@
 
 <script>
 
-    const labels = JSON.parse('{{ labels | tojson | safe }}');
-    const values = JSON.parse('{{ values | tojson | safe }}');
+    const labels = JSON.parse('{{ labels | tojson }}');
+    const values = JSON.parse('{{ values | tojson }}');
 
     const ctx = document
         .getElementById('projectionChart')
@@ -195,7 +195,7 @@
 
             datasets: [{
 
-                label: 'Projected Expenses',
+                label: 'Cheltuieli estimate',
 
                 data: values,
 

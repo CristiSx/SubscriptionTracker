@@ -47,7 +47,7 @@
             <input
                 type="text"
                 name="name"
-                placeholder="Service Name"
+                placeholder="Nume Serviciu"
                 required
             >
             <div class="text-subscription-add">Cost:</div>
@@ -55,7 +55,7 @@
                 type="number"
                 step="0.01"
                 name="cost"
-                placeholder="Price"
+                placeholder="Cost Serviciu"
                 required
             >
             <div class="text-subscription-add">Tip abonament:</div>
@@ -78,7 +78,7 @@
             >
              <div class="text-subscription-add">Data încetării abonamentului:</div>
             <input
-                type="date"
+                type="date" 
                 name="due_date"
                 required
             >
@@ -109,7 +109,7 @@
             <input
                 type="text"
                 name="name"
-                placeholder="Expense Name"
+                placeholder="Nume Cheltuială"
                 required
             >
             <div class="text-subscription-add">Cost:</div>
@@ -117,7 +117,7 @@
                 type="number"
                 step="0.01"
                 name="cost"
-                placeholder="Price"
+                placeholder="Cost Cheltuială"
                 required
             >
             <div class="text-subscription-add">Data:</div>
@@ -246,19 +246,7 @@
             </div>
 
 
-            <div class="stat-card">
-
-                <div>
-                    <p>Facturi viitoare</p>
-                    <h2>${{ "%.2f"|format(stats.upcoming_bills) }}</h2>
-                    
-                </div>
-
-                <div class="stat-icon orange">
-                    <i class="fa-solid fa-calendar"></i>
-                </div>
-
-            </div>
+    
 
 
             <div class="stat-card">
