@@ -44,11 +44,16 @@
             <form method="POST">
                 <input type="email" name="email" placeholder="Introdu adresa ta de email" required>
                 <input type="password" name="password" placeholder="Introdu parola ta" required>
-
-                <div class="options">
-                    <label><input type="checkbox">Ține-mi minte</label>
-                    <a href="#">Ai uitat parola?</a>
+                {%if error and error != "" %}
+                <div class="alert">
+                    {{ error }}
                 </div>
+                {%endif%}  
+
+                <!-- <div class="options">
+                    <label><input type="checkbox">Ține-mi minte</label>
+                    {<a href="#">Ai uitat parola?</a>*/} 
+                </div> -->
 
                 <button type="submit" class="btn-login">Sign In</button>
             </form>
