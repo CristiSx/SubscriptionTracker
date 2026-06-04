@@ -5,7 +5,6 @@ from flask import Blueprint, render_template
 from flask import request, redirect, url_for
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import locale
 
 from flask_login import (
     login_required,
@@ -88,9 +87,9 @@ def projection():
         future_date = today + relativedelta(months=i)
 
         month_name = f"{luni[future_date.month]} {future_date.year}"
-        print(month_name)
+      
 
-        # SUBSCRIPTIONS
+      
         for sub in subscriptions:
 
             if sub.billing_cycle == "monthly":
@@ -99,7 +98,7 @@ def projection():
             elif sub.billing_cycle == "yearly":
                 projection_data[month_name] += sub.cost / 12
 
-        # ONE TIME EXPENSES
+      
         for expense in expenses:
 
             expense_month = f"{luni[expense.date.month]} {expense.date.year}"

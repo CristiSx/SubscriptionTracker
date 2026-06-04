@@ -39,6 +39,8 @@ def login():
         if user and user.check_password(password):
             login_user(user)
             return redirect(url_for("homes.home"))
+        else:
+            return render_template("login.html", error="Email sau parolă incorectă")
 
     return render_template("login.html")
 
