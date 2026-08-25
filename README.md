@@ -190,7 +190,7 @@ MAIL_PASSWORD=your_app_password
 6. Rularea aplicației:
 
 ```bash
-python app.py
+python run.py
 ```
 
 ---
