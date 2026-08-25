@@ -1,5 +1,5 @@
 
 app/
 .env
-
+__pycache__/
 # ignora env files
